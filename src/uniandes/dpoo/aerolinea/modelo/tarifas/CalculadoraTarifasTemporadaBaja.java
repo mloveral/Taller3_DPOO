@@ -17,7 +17,7 @@ public class CalculadoraTarifasTemporadaBaja extends CalculadoraTarifas {
 	 * Calcula el costo base como COSTO_POR_KM x distancia.
 	 */
 	@Override
-	protected int calcularCostoBase(Vuelo vuelo, Cliente cliente) {
+	public int calcularCostoBase(Vuelo vuelo, Cliente cliente) {
 		// TODO Auto-generated method stub
 		String tipoCliente = cliente.getTipoCliente();
 		Ruta rutaVuelo = vuelo.getRuta();
@@ -38,7 +38,7 @@ public class CalculadoraTarifasTemporadaBaja extends CalculadoraTarifas {
 	 * Calcula el porcentaje de descuento que se le debería dar a un cliente dado su tipo y/o su historia. El método retorna un número entre 0 y 1: 0 significa que no hay descuento, y 1 significa que el descuento es del 100%.
 	 */
 	@Override
-	protected double calcularPorcentajeDescuento(Cliente cliente) {
+	public double calcularPorcentajeDescuento(Cliente cliente) {
 		// TODO Auto-generated method stub
 		double descuento = 0;
 		String tipoCliente = cliente.getTipoCliente();
