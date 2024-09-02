@@ -18,8 +18,16 @@ public abstract class Cliente {
 		this.tiquetesUsados = new ArrayList<Tiquete>();
 	}
 	
+	/**
+     * Retorna el tipo del cliente.
+     * @return Una cadena que identifica el tipo de Cliente
+     */
 	public abstract String getTipoCliente();
 	
+	/**
+     * Retorna el identificador del cliente
+     * @return Identificador del cliente que debería ser único
+     */
 	public abstract String getIdentificador();
 	
 	
