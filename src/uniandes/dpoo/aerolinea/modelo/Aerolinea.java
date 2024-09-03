@@ -289,6 +289,74 @@ public class Aerolinea
     public void programarVuelo( String fecha, String codigoRuta, String nombreAvion ) throws Exception
     {
         // TODO Implementar el método
+    	
+    	Collection<Vuelo> vuelos = this.getVuelos();
+    	boolean sePuedeAdicionar = true;
+    	Vuelo vuelo;
+    	Avion avion = null;
+    	Ruta ruta = null;
+    	
+    	if (vuelos.size() != 0)
+    	{
+    		for (Iterator<Vuelo> iterador = vuelos.iterator(); iterador.hasNext(); )
+    		{
+    			vuelo = iterador.next();
+    			avion = vuelo.getAvion();
+    			if (avion.getNombre().equals(nombreAvion))
+    			{
+    				if (vuelo.getFecha().equals(fecha))
+    				{
+    					sePuedeAdicionar = false;
+    					throw new Exception("El avion buscado ya tiene otro vuelo asignado");
+    				}
+    			}
+    		}
+    	}
+    	
+    	if (sePuedeAdicionar)
+    	{
+    		Collection<Avion> aviones = this.getAviones();
+    		if (aviones.size() != 0)
+    		{
+    			Iterator<Avion> iterador = aviones.iterator();
+    			boolean encontrado = false;
+    			while (iterador.hasNext() && !encontrado) {
+    				avion = iterador.next();
+    				if (avion.getNombre().equals(nombreAvion))
+    				{
+    					encontrado = true;
+    				}
+    			}
+    			
+    			if (!encontrado)
+    			{
+    				throw new Exception("La aerolinea no tiene el avion buscado");
+    			}
+    			
+    			encontrado = false;
+    			Collection<Ruta> rutas = this.getRutas();
+    			if (rutas.size() != 0)
+    			{
+    				Iterator<Ruta> iterador2 = rutas.iterator();
+    				while (iterador2.hasNext() && !encontrado)
+    				{
+    					ruta = iterador2.next();
+    					if (ruta.getCodigoRuta().equals(codigoRuta))
+    					{
+    						encontrado = true;
+    					}
+    				}
+    				
+    				if (!encontrado) {
+    					throw new Exception ("No se encontro la ruta");
+    				}
+    				
+    				vuelo = new Vuelo(ruta, fecha, avion);
+    				this.vuelos.add(vuelo);
+    			}
+    			
+    		}
+    	}
     }
 
     /**
