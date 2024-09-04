@@ -12,6 +12,9 @@ import java.util.Map;
 import uniandes.dpoo.aerolinea.exceptions.InformacionInconsistenteException;
 import uniandes.dpoo.aerolinea.exceptions.VueloSobrevendidoException;
 import uniandes.dpoo.aerolinea.modelo.cliente.Cliente;
+import uniandes.dpoo.aerolinea.modelo.tarifas.CalculadoraTarifas;
+import uniandes.dpoo.aerolinea.modelo.tarifas.CalculadoraTarifasTemporadaAlta;
+import uniandes.dpoo.aerolinea.modelo.tarifas.CalculadoraTarifasTemporadaBaja;
 import uniandes.dpoo.aerolinea.persistencia.CentralPersistencia;
 import uniandes.dpoo.aerolinea.persistencia.IPersistenciaAerolinea;
 import uniandes.dpoo.aerolinea.persistencia.IPersistenciaTiquetes;
@@ -377,7 +380,68 @@ public class Aerolinea
     public int venderTiquetes( String identificadorCliente, String fecha, String codigoRuta, int cantidad ) throws VueloSobrevendidoException, Exception
     {
         // TODO Implementar el método
-        return -1;
+    	int valor = 0;
+    	Cliente cliente = null;
+    	Vuelo vuelo = null;
+    	Ruta ruta = null;
+    	boolean encontrado = false;
+    	
+    	Collection<Vuelo> vuelos = this.getVuelos();
+    	Iterator<Vuelo> iteradorVuelos = vuelos.iterator();
+    	
+    	while(!encontrado && iteradorVuelos.hasNext())
+    	{
+    		vuelo = iteradorVuelos.next();
+    		ruta = vuelo.getRuta();
+    		if (ruta.getCodigoRuta().equals(codigoRuta))
+    		{
+    			if (vuelo.getFecha().equals(fecha))
+    			{
+        			encontrado = true;    				
+    			}
+    		}
+    	}
+    	
+    	if (!encontrado)
+    	{
+    		throw new Exception("No se encontro el vuelo para vender tiquetes");
+    	}
+    	
+    	encontrado = false;
+    	Collection<Cliente> clientes = this.getClientes();
+    	Iterator<Cliente> iteradorClientes = clientes.iterator();
+    	
+    	while (!encontrado && iteradorClientes.hasNext())
+    	{
+    		cliente = iteradorClientes.next();
+    		if (cliente.getIdentificador().equals(identificadorCliente))
+    		{
+    			encontrado = true;
+    		}
+    	}
+    	
+    	if (!encontrado)
+    	{
+    		throw new Exception("No se encontro el cliente para vender tiquetes");
+    	}
+    	
+    	//Obtiene el mes del string fecha
+    	//El mes esta guardado en las posiciones 5 y 6 del String en el formato YYYY-MM-DD
+    	String mes = "" + fecha.charAt(5) + fecha.charAt(6);
+    	CalculadoraTarifas calculadora = null;
+    	
+    	if (mes.equals("06") || mes.equals("07") || mes.equals("08") || mes.equals("12"))
+    	{
+    		calculadora = new CalculadoraTarifasTemporadaAlta();
+    	}
+    	else 
+    	{
+    		calculadora = new CalculadoraTarifasTemporadaBaja();
+    	}
+    	
+    	valor = vuelo.venderTiquetes(cliente, calculadora, cantidad);
+    	
+        return valor;
     }
 
     /**
