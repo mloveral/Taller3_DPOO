@@ -452,6 +452,34 @@ public class Aerolinea
     public void registrarVueloRealizado( String fecha, String codigoRuta )
     {
         // TODO Implementar el método
+    	Vuelo vuelo = null;
+    	Ruta ruta = null;
+    	boolean encontrado = false;
+    	
+    	Collection<Vuelo> vuelos = this.getVuelos();
+    	Iterator<Vuelo> iteradorVuelos = vuelos.iterator();
+    	
+    	while(!encontrado && iteradorVuelos.hasNext())
+    	{
+    		vuelo = iteradorVuelos.next();
+    		ruta = vuelo.getRuta();
+    		if (ruta.getCodigoRuta().equals(codigoRuta))
+    		{
+    			if (vuelo.getFecha().equals(fecha))
+    			{
+        			encontrado = true;    				
+    			}
+    		}
+    	}
+    	if (encontrado)
+    	{
+    		this.vuelos.remove(vuelo);
+        	System.out.println("Se realizó el vuelo de la ruta " + codigoRuta + "  en la fecha " + fecha);
+    	}
+    	else
+    	{
+    		System.out.println("No se encontro el vuelo");
+    	}
     }
 
     /**
@@ -462,7 +490,27 @@ public class Aerolinea
     public String consultarSaldoPendienteCliente( String identificadorCliente )
     {
         // TODO Implementar el método
-        return "";
+    	boolean encontrado = false;
+    	Integer suma = 0;
+    	Cliente cliente = null;
+    	Collection<Cliente> clientes = this.getClientes();
+    	Iterator<Cliente> iteradorClientes = clientes.iterator();
+    	
+    	while (!encontrado && iteradorClientes.hasNext())
+    	{
+    		cliente = iteradorClientes.next();
+    		if (cliente.getIdentificador().equals(identificadorCliente))
+    		{
+    			encontrado = true;
+    		}
+    	}
+    	
+    	if (encontrado)
+    	{
+    		suma = cliente.calcularValorTotalTiquetes();
+    	}
+    	
+        return suma.toString();
     }
 
 }

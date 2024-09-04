@@ -52,10 +52,10 @@ public abstract class Cliente {
 			total += tiquete.getTarifa();
 		}
 		
-		for (Iterator<Tiquete> iterador = this.tiquetesUsados.iterator(); iterador.hasNext();) {
-			tiquete = iterador.next();
-			total += tiquete.getTarifa();
-		}
+//		for (Iterator<Tiquete> iterador = this.tiquetesUsados.iterator(); iterador.hasNext();) {
+//			tiquete = iterador.next();
+//			total += tiquete.getTarifa();
+//		}
 		return total;
 	}
 	
