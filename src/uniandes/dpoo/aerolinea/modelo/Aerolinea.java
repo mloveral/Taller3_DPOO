@@ -205,7 +205,20 @@ public class Aerolinea
     public Collection<Tiquete> getTiquetes( )
     {
         // TODO implementar
-        return null;
+    	Vuelo vuelo = null;
+    	Collection<Tiquete> tiquetes = new ArrayList<Tiquete>();
+    	Collection<Vuelo> vuelos = this.getVuelos();
+    	Iterator<Vuelo> iteradorVuelos = vuelos.iterator();
+    	
+    	while(iteradorVuelos.hasNext())
+    	{
+    		vuelo = iteradorVuelos.next();
+    		for (Tiquete tiquete: vuelo.getTiquetes())
+    		{
+    			tiquetes.add(tiquete);
+    		}
+    	}
+        return tiquetes;
 
     }
 
